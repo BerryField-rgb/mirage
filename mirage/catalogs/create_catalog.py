@@ -1432,7 +1432,7 @@ def wise_crossmatch(gaia_cat, gaia_wise, gaia_wise_crossref, wise_cat, twomass_c
         if (d2d[loop].arcsec) < 0.4:
             matchwise[idx[loop]] = True
             for n2 in range(num_gaia):
-                if gaia_cat['DESIGNATION'][n2] == gaia_wise_crossref['designation'][loop]:
+                if gaia_cat['designation'][n2] == gaia_wise_crossref['designation'][loop]:
                     gaiawiseinds[idx[loop]] = n2
                     break
     return matchwise, gaiawiseinds, twomasswiseinds
