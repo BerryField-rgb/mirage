@@ -4,13 +4,7 @@ There are two aspects to Mirage installation. First, the software itself must be
 must be downloaded. The preferred installation method is via :ref:`Pypi <pypi>`, as this is the latest stable version of the software.
 
 .. tip::
-    Mirage currently supports python 3.8 and 3.9. Support for 3.6 and 3.7 has been removed, as the `jwst <https://github.com/spacetelescope/jwst>`_ package, which contains the JWST calibration pipeline, no longer supports python < 3.8.
-
-.. attention::
-    **For those running Mac OSX 10.14:**
-
-    Some users have reported errors when installing Mirage on their machines running Mac OSX 10.14. If you see installation failures for the synphot or batman packages, they are most likely related to the OpenMP library. See the section below on :ref:`Troubleshooting for Mac OSX 10.14 installtion <osx1014>`.
-
+    Mirage currently supports python 3.11 and 3.12.
 
 .. _pypi:
 
@@ -22,16 +16,9 @@ a conda environment called "mirage" and then install the software into that envi
 
 ::
 
-    conda create -n mirage python=3.12 -y
+    conda create -n mirage python=3.11 -y
     conda activate mirage
     pip install mirage
-
-.. tip::
-    Some of Mirage's dependencies rely on `Healpy <https://healpy.readthedocs.io/en/latest/>`_,. Healpy has released different wheels for different versions of Mac OSX. For example, healpy version 1.12.5
-    works for MacOSX 10.13 (High Sierra) and 1.14.0 works for MacOSX 10.15 (Catalina). If the version of healpy above does not work for your system, you may need to install a different version.
-
-.. tip::
-    This method installs `webbpsf <https://webbpsf.readthedocs.io/en/latest/>`_ via pip. In this case, you must also `manually download the collection of webbpsf data files <https://webbpsf.readthedocs.io/en/latest/installation.html#installing-the-required-data-files>`_ If you install webbpsf via conda, the data files are downloaded and installed for you, however conda installation is currrently only supported for python 3.7 and below.
 
 
 Install the Development Version
@@ -43,16 +30,9 @@ The installation procedure is nearly identical to the case of installing from Py
 
 ::
 
-    conda create -n mirage python=3.9 -y
+    conda create -n mirage python=3.11 -y
     conda activate mirage
     pip install git+https://github.com/spacetelescope/mirage
-
-.. tip::
-    Some of Mirage's dependencies rely on `Healpy <https://healpy.readthedocs.io/en/latest/>`_,. Healpy has released different wheels for different versions of Mac OSX. For example, healpy version 1.12.5
-    works for MacOSX 10.13 (High Sierra) and 1.14.0 works for MacOSX 10.15 (Catalina). If the version of healpy above does not work for your system, you may need to install a different version.
-
-.. tip::
-    This method installs `webbpsf <https://webbpsf.readthedocs.io/en/latest/>`_ via pip. In this case, you must also `manually download the collection of webbpsf data files <https://webbpsf.readthedocs.io/en/latest/installation.html#installing-the-required-data-files>`_ If you install webbpsf via conda, the data files are downloaded and installed for you, however conda installation is currrently only supported for python 3.7 and below.
 
 
 Installation for Developers
@@ -71,17 +51,10 @@ Installation can then be done via pip, which uses setup.py, or using the conda e
 To install using pip and setup.py:
 Create and activate a new environment. In this example we call the environment "mirage". Then move into the mirage directory, and install Mirage into the new environment::
 
-    conda create -n mirage python=3.9 -y
+    conda create -n mirage python=3.11 -y
     conda activate mirage
     cd mirage
     pip install .
-
-.. tip::
-    Some of Mirage's dependencies rely on `Healpy <https://healpy.readthedocs.io/en/latest/>`_,. Healpy has released different wheels for different versions of Mac OSX. For example, healpy version 1.12.5
-    works for MacOSX 10.13 (High Sierra) and 1.14.0 works for MacOSX 10.15 (Catalina). If the version of healpy above does not work for your system, you may need to install a different version.
-
-.. tip::
-    This method installs `webbpsf <https://webbpsf.readthedocs.io/en/latest/>`_ via pip. In this case, you must also `manually download the collection of webbpsf data files <https://webbpsf.readthedocs.io/en/latest/installation.html#installing-the-required-data-files>`_ If you install webbpsf via conda, the data files are downloaded and installed for you, however conda installation is currrently only supported for python 3.7 and below.
 
 .. _env_file_install:
 
