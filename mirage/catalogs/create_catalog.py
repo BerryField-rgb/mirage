@@ -28,6 +28,7 @@ from mirage.catalogs.catalog_generator import PointSourceCatalog, GalaxyCatalog,
     ExtendedCatalog, MovingPointSourceCatalog, MovingExtendedCatalog, \
     MovingSersicCatalog
 from mirage.logging import logging_functions
+from mirage.reference_files import crds_tools
 from mirage.utils.constants import FGS_FILTERS, NIRCAM_FILTERS, NIRCAM_PUPIL_WHEEL_FILTERS, \
     NIRISS_FILTERS, NIRISS_PUPIL_WHEEL_FILTERS, NIRCAM_2_FILTER_CROSSES, NIRCAM_WL8_CROSSING_FILTERS, \
     NIRCAM_CLEAR_CROSSING_FILTERS, NIRCAM_GO_PW_FILTER_PAIRINGS, LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME
@@ -37,6 +38,10 @@ from mirage.utils.utils import ensure_dir_exists, make_mag_column_names, standar
 classdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 log_config_file = os.path.join(classdir, 'logging', LOG_CONFIG_FILENAME)
 logging_functions.create_logger(log_config_file, STANDARD_LOGFILE_NAME)
+
+
+# Check that CRDS-related environment variables are set correctly
+crds_datadir = crds_tools.env_variables()
 
 
 def create_basic_exposure_list(xml_file, pointing_file):
