@@ -119,7 +119,7 @@ def download(url, fname):
     url: string
         URL pointing to the file to download.
     fname: string
- Output filename of the file to download.
+        Output filename of the file to download.
     """
     with closing(request.urlopen(url)) as r:
         with open(fname, 'wb') as f:
