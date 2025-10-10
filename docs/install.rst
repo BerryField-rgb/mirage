@@ -22,7 +22,7 @@ a conda environment called "mirage" and then install the software into that envi
 
 ::
 
-    conda create -n mirage python=3.9 -y
+    conda create -n mirage python=3.12 -y
     conda activate mirage
     pip install mirage
 
@@ -90,43 +90,36 @@ Install via Environment File
 
 The Mirage repository also contains environment files, which can be used to create an environment with proper versions of all of Mirage's dependencies. After cloning the Mirage repository, the environment file (located within the top-level directory) can be used via the following commands. The *name* keyword is used to specify that the name of the environment. You can name the environment anything you like.
 
-Create a python 3.8 environment using the environment file, activate the environment, and install mirage::
+Create a python 3.11 environment using the environment file, activate the environment, and install mirage::
 
     cd mirage
-    conda env create -f environment_python_3.8.yml
-    conda activate mirage_py3.8
+    conda env create -f environment_python_3.11.yml
+    conda activate mirage_py3.11
     pip install .
 
 
-There is also an environment file that can be used to create python 3.9 environment::
+There is also an environment file that can be used to create python 3.12 environment::
 
     cd mirage
-    conda env create -f environment_python_3.9.yml
-    conda activate mirage_py3.9
+    conda env create -f environment_python_3.12.yml
+    conda activate mirage_py3.12
     pip install .
 
 
+.. _batman
 
-.. tip::
-    For the python 3.8 and 3.9 cases most packages, including webbpsf, are installed via pip (astroconda does not yet support python 3.8 and beyond). In this case you must `manually download the collection of webbpsf data files <https://webbpsf.readthedocs.io/en/latest/installation.html#installing-the-required-data-files>`_.
+Batman versions
+---------------
 
+Intel-based Mac installation
+++++++++++++++++++++++++++++
 
-.. _osx1014:
+As of Oct 2025, the most recent version of the Batman package is 2.5.3. However, this version does not have a wheel that works for Intel-based Macs. It is possible to revert back to version 2.5.2, however this version requires numpy < 2.0, which conflicts with several other dependencies, including the jwst pipeline. Therefore, for those on Intel-based Macs, we recommend omitting the Batman package when creating the environment.
 
-Troubleshooting for Mac OSX 10.14 installtion
----------------------------------------------
+Build failure
++++++++++++++
 
-If you have installation errors on your machine running 10.14 (Mojave), try these solutions.
-
-Synphot
-+++++++
-
-If the synphot package fails to build, try installing via conda using the conda-forge channel. Do this before installing Mirage, using the command:
-
-    - conda install synphot -c conda-forge
-
-Batman
-++++++
+This is an issue from previous versions of Mac OXS and may not longer be relevent. We keep it here just in case it is still an issue for anyone.
 
 If the `Batman <https://github.com/lkreidberg/batman>`_ package fails to build, the work-around is more complex. Mirage uses the Batman package when simulating imaging and grism Time Series Observations (TSO).
 
@@ -140,8 +133,8 @@ The installation errors are related to supporting Batman's ability to run calcul
     ::
 
         cd mirage
-        conda env create -f environment_python_3.9.yml
-        conda activate mirage
+        conda env create -f environment_python_3.11.yml
+        conda activate mirage-py3.11
         pip install .
         cd ../batman
         pip install .
