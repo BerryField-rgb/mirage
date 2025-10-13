@@ -84,10 +84,16 @@ There is also an environment file that can be used to create python 3.12 environ
 Batman versions
 ---------------
 
+Python 3.12
++++++++++++
+
+As of October 2025, the Batman package does not work when using python 3.12. If you require the Batman package (used to create Time Series data), you should use a python 3.11 environment.
+
+
 Intel-based Mac installation
 ++++++++++++++++++++++++++++
 
-As of Oct 2025, the most recent version of the Batman package is 2.5.3. However, this version does not have a wheel that works for Intel-based Macs. It is possible to revert back to version 2.5.2, however this version requires numpy < 2.0, which conflicts with several other dependencies, including the jwst pipeline. Therefore, for those on Intel-based Macs, we recommend omitting the Batman package when creating the environment.
+As of Oct 2025, the most recent version of the Batman package is 2.5.3. However, this version does not have a wheel that works for Intel-based Macs. It is possible to revert back to version 2.5.2, however this version requires numpy < 2.0, which conflicts with several other dependencies, including the jwst pipeline. Therefore, for those on Intel-based Macs, we recommend omitting the Batman package when creating the environment. If you are on an Intel-based Mac and require the Batman package, you can either create your environment using the environment file for python 3.11 and then manually downgrade numpy, jwst, and Batman, or use the environment_python_3.11_intel_mac.yml to create the environment.
 
 Build failure
 +++++++++++++
