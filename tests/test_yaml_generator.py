@@ -13,7 +13,7 @@ import os
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 os.environ["MIRAGE_DATA"] = __location__
 os.environ["CRDS_PATH"] = os.path.join(__location__, "temp")
-os.environ["CRDS_SERVER_URL"] = https://jwst-crds.stsci.edu
+os.environ["CRDS_SERVER_URL"] = "https://jwst-crds.stsci.edu"
 
 import numpy as np
 import pytest
