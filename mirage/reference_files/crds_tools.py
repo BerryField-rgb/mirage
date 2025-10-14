@@ -30,7 +30,6 @@ Use
 
 import datetime
 import os
-os.environ["CRDS_SERVER_URL"] = "https://jwst-crds.stsci.edu"
 import logging
 
 from mirage.logging import logging_functions

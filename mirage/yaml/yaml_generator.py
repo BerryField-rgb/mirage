@@ -92,7 +92,6 @@ History
 
 import sys
 import os
-os.environ["CRDS_SERVER_URL"] = "https://jwst-crds.stsci.edu"
 import argparse
 from collections import Counter
 import importlib.resources as resources

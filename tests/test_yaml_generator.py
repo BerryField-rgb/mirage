@@ -454,6 +454,7 @@ def test_reffile_crds_full_name():
     input_xml = os.path.join(__location__, 'test_data/misc/12345/12345_nircam_imaging_prime_niriss_wfss_parallel.xml')
     pointing_file = os.path.join(__location__, 'test_data/misc/12345/12345_nircam_imaging_prime_niriss_wfss_parallel.pointing')
     temp_output_dir = os.path.join(__location__, "temp")
+    os.environ["CRDS_SERVER_URL"] = "https://jwst-crds.stsci.edu"
 
     yam = SimInput(input_xml, pointing_file, verbose=True, catalogs=catalogs,
                    offline=True, output_dir=temp_output_dir,
