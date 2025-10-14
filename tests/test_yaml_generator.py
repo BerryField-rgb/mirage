@@ -394,7 +394,7 @@ def test_reffile_crds():
     os.system('rm -r {}'.format(temp_output_dir))
 
 
-@pytest.mark.skipif(ON_GITHUB, , reason='CRDS server URL unknown')
+@pytest.mark.skipif(ON_GITHUB, reason='CRDS server URL unknown')
 def test_reffile_crds_full_name():
     """Test that the correct values for reference files are found
     """
