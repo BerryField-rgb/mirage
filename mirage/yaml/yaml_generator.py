@@ -94,7 +94,6 @@ import sys
 import os
 import argparse
 from collections import Counter
-import importlib.resources as resources
 import logging
 from copy import deepcopy
 from glob import glob
@@ -116,7 +115,7 @@ from ..utils.constants import FGS1_DARK_SEARCH_STRING, FGS2_DARK_SEARCH_STRING
 from ..utils.siaf_interface import aperture_xy_to_radec
 from ..utils.utils import calc_frame_time, ensure_dir_exists, expand_environment_variable, parse_RA_Dec
 from .generate_observationlist import get_observation_dict
-from ..constants import NIRISS_PUPIL_WHEEL_ELEMENTS, NIRISS_FILTER_WHEEL_ELEMENTS
+from ..constants import MODULE_PATH, NIRISS_PUPIL_WHEEL_ELEMENTS, NIRISS_FILTER_WHEEL_ELEMENTS
 from ..utils.constants import CRDS_FILE_TYPES, SEGMENTATION_MIN_SIGNAL_RATE, \
                               LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME
 from ..utils import siaf_interface, utils
@@ -330,9 +329,6 @@ class SimInput:
 
         # Check that CRDS-related environment variables are set correctly
         self.crds_datadir = crds_tools.env_variables()
-
-        # Get the path to the 'MIRAGE' package
-        self.modpath = str(resources.files('mirage'))
 
         self.config_information = utils.organize_config_files(offline=self.offline)
 
@@ -1431,15 +1427,15 @@ class SimInput:
                 psf_wing_threshold_file = 'N/A'
                 psfpath = 'N/A'
             if instrument in 'niriss fgs nircam'.split():
-                self.global_subarray_definitions[instrument] = self.get_subarray_defs(filename=os.path.join(self.modpath, 'config', subarray_def_file))
-                self.global_readout_patterns[instrument] = self.get_readpattern_defs(filename=os.path.join(self.modpath, 'config', readout_pattern_file))
-            self.global_subarray_definition_files[instrument] = os.path.join(self.modpath, 'config', subarray_def_file)
-            self.global_readout_pattern_files[instrument] = os.path.join(self.modpath, 'config', readout_pattern_file)
-            self.global_crosstalk_files[instrument] = os.path.join(self.modpath, 'config', crosstalk_file)
-            self.global_filtpupilcombo_files[instrument] = os.path.join(self.modpath, 'config', filtpupilcombo_file)
-            self.global_filter_position_files[instrument] = os.path.join(self.modpath, 'config', filter_position_file)
-            self.global_flux_cal_files[instrument] = os.path.join(self.modpath, 'config', flux_cal_file)
-            self.global_psf_wing_threshold_file[instrument] = os.path.join(self.modpath, 'config', psf_wing_threshold_file)
+                self.global_subarray_definitions[instrument] = self.get_subarray_defs(filename=os.path.join(MODULE_PATH, 'config', subarray_def_file))
+                self.global_readout_patterns[instrument] = self.get_readpattern_defs(filename=os.path.join(MODULE_PATH, 'config', readout_pattern_file))
+            self.global_subarray_definition_files[instrument] = os.path.join(MODULE_PATH, 'config', subarray_def_file)
+            self.global_readout_pattern_files[instrument] = os.path.join(MODULE_PATH, 'config', readout_pattern_file)
+            self.global_crosstalk_files[instrument] = os.path.join(MODULE_PATH, 'config', crosstalk_file)
+            self.global_filtpupilcombo_files[instrument] = os.path.join(MODULE_PATH, 'config', filtpupilcombo_file)
+            self.global_filter_position_files[instrument] = os.path.join(MODULE_PATH, 'config', filter_position_file)
+            self.global_flux_cal_files[instrument] = os.path.join(MODULE_PATH, 'config', flux_cal_file)
+            self.global_psf_wing_threshold_file[instrument] = os.path.join(MODULE_PATH, 'config', psf_wing_threshold_file)
             self.global_psfpath[instrument] = psfpath
 
     def lowercase_dict_keys(self):
@@ -1566,7 +1562,7 @@ class SimInput:
                 self.psfpixfrac[instrument] = 0.1
 
             # Set global file paths
-            self.configfiles[instrument]['filter_throughput'] = os.path.join(self.modpath, 'config', 'placeholder.txt')
+            self.configfiles[instrument]['filter_throughput'] = os.path.join(MODULE_PATH, 'config', 'placeholder.txt')
 
         for instrument in 'miri nirspec'.split():
             self.configfiles[instrument] = {}
@@ -1653,7 +1649,7 @@ class SimInput:
         if file.lower() not in ['config']:
             file = os.path.abspath(file)
         elif file.lower() == 'config':
-            file = os.path.join(self.modpath, 'config', self.configfiles[prop])
+            file = os.path.join(MODULE_PATH, 'config', self.configfiles[prop])
         return file
 
     def get_psf_path(self):

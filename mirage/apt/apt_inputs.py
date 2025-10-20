@@ -41,7 +41,6 @@ October 2018 - Major modifications to read programs of all science instruments a
 '''
 import copy
 import os
-import importlib.resources as resources
 import logging
 import re
 import argparse
@@ -58,7 +57,7 @@ from . import read_apt_xml
 from ..logging import logging_functions
 from ..utils import siaf_interface, constants, utils
 from mirage.utils.constants import NIRCAM_UNSUPPORTED_PUPIL_VALUES, LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME, \
-                                   NIRCAM_LW_GRISMTS_APERTURES, NIRCAM_SW_GRISMTS_APERTURES
+                                   NIRCAM_LW_GRISMTS_APERTURES, NIRCAM_SW_GRISMTS_APERTURES, MODULE_PATH
 
 
 classpath = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
@@ -91,7 +90,7 @@ class AptInput:
 
         # Locate the module files, so that we know where to look
         # for config subdirectory
-        self.config_path = os.path.join(str(resources.files('mirage')), 'config')
+        self.config_path = os.path.join(MODULE_PATH, 'config')
 
     def add_epochs(self, intab):
         """NOT CURRENTLY USED"""

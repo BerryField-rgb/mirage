@@ -8,7 +8,6 @@ in catalog_generator.py that can combine catalogs
 
 from collections import OrderedDict
 import copy
-import importlib.resources as resources
 import logging
 import math
 import numpy as np
@@ -31,7 +30,8 @@ from mirage.logging import logging_functions
 from mirage.reference_files import crds_tools
 from mirage.utils.constants import FGS_FILTERS, NIRCAM_FILTERS, NIRCAM_PUPIL_WHEEL_FILTERS, \
     NIRISS_FILTERS, NIRISS_PUPIL_WHEEL_FILTERS, NIRCAM_2_FILTER_CROSSES, NIRCAM_WL8_CROSSING_FILTERS, \
-    NIRCAM_CLEAR_CROSSING_FILTERS, NIRCAM_GO_PW_FILTER_PAIRINGS, LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME
+    NIRCAM_CLEAR_CROSSING_FILTERS, NIRCAM_GO_PW_FILTER_PAIRINGS, LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME, \
+    MODULE_PATH
 from mirage.utils import siaf_interface
 from mirage.utils.utils import ensure_dir_exists, make_mag_column_names, standardize_filters
 
@@ -987,8 +987,7 @@ def read_standard_magnitudes():
     """
     # read in the values needed to transform the Besancon model magnitudes
     #
-    module_path = str(resources.files('mirage'))
-    standard_mag_file = os.path.join(module_path, 'config/magslist_bosz_normal_mirage.new')
+    standard_mag_file = os.path.join(MODULE_PATH, 'config/magslist_bosz_normal_mirage.new')
     with open(standard_mag_file, 'r') as infile:
         lines = infile.readlines()
 
@@ -2471,8 +2470,7 @@ def galaxy_background(ra0, dec0, v3rotangle, box_width, instrument, filters,
                   'niriss_f430m_magnitude': 28, 'niriss_f444w_magnitude': 21,
                   'niriss_f480m_magnitude': 30, 'fgs_guider1_magnitude': 11,
                   'fgs_guider2_magnitude': 11}
-    module_path = str(resources.files('mirage'))
-    catalog_file = os.path.join(module_path, 'config/goodss_3dhst.v4.1.jwst_galfit.cat')
+    catalog_file = os.path.join(MODULE_PATH, 'config/goodss_3dhst.v4.1.jwst_galfit.cat')
     catalog_values = np.loadtxt(catalog_file, comments='#')
 
     # Force positive values for radius, sersic index, and ellipticity

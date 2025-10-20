@@ -19,10 +19,9 @@ import os
 import pysiaf
 
 from mirage.utils import backgrounds, file_io
-from mirage.utils.constants import MEAN_GAIN_VALUES
+from mirage.utils.constants import MEAN_GAIN_VALUES, MODULE_PATH
 
-package_path = str(resources.files('mirage'))
-CONFIG_DIR = os.path.join(package_path, 'config')
+CONFIG_DIR = os.path.join(MODULE_PATH, 'config')
 
 
 def test_day_of_year_background_spectrum():

@@ -16,9 +16,9 @@ import numpy as np
 import os
 
 from mirage.utils import flux_cal
+from mirage.utils.constants import MODULE_PATH
 
-package_path = str(resources.files('mirage'))
-CONFIG_DIR = os.path.join(package_path, 'config')
+CONFIG_DIR = os.path.join(MODULE_PATH, 'config')
 
 
 def test_add_detector_to_zeropoints():
