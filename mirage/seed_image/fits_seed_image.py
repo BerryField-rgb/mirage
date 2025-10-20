@@ -120,7 +120,6 @@ import argparse
 import copy
 import logging
 import os
-import importlib.resources as resources
 import sys
 
 from astropy.io import fits, ascii
@@ -143,7 +142,7 @@ from mirage.psf.psf_selection import get_psf_wings
 from mirage.psf import tools
 from mirage.seed_image.save_seed import save
 from mirage.reference_files import crds_tools
-from mirage.utils.constants import EXPTYPES, LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME
+from mirage.utils.constants import EXPTYPES, LOG_CONFIG_FILENAME, MODULE_PATH, STANDARD_LOGFILE_NAME
 from mirage.utils.flux_cal import fluxcal_info
 from mirage.utils.siaf_interface import get_siaf_information
 
@@ -259,10 +258,6 @@ class ImgSeed:
                               .format(allowed_mosaic_fwhm_units)))
         self.mosaic_fwhm_units = mosaic_fwhm_units
         self.save_intermediates = save_intermediates
-
-        # Locate the module files, so that we know where to look
-        # for config subdirectory
-        self.modpath = str(resources.files('mirage'))
 
         # self.coords contains the factor by which the
         # nominal output array size needs to be increased
@@ -514,7 +509,7 @@ class ImgSeed:
         """
         if filename.lower() == 'config':
             sfile = config_files[self.instrument.lower()][filetype]
-            return os.path.join(self.modpath, 'config', sfile)
+            return os.path.join(MODULE_PATH, 'config', sfile)
         else:
             return filename
 

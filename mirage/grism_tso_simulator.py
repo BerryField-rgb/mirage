@@ -50,7 +50,6 @@ import os
 import sys
 import argparse
 import datetime
-import importlib.resources as resources
 import logging
 import yaml
 
@@ -72,7 +71,7 @@ from mirage.ramp_generator import obs_generator
 from mirage.reference_files import crds_tools
 from mirage.utils import read_fits
 from mirage.utils.constants import CATALOG_YAML_ENTRIES, MEAN_GAIN_VALUES, \
-                                   LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME
+                                   LOG_CONFIG_FILENAME, MODULE_PATH, STANDARD_LOGFILE_NAME
 from mirage.utils.file_splitting import find_file_splits, SplitFileMetaData
 from mirage.utils import utils, file_io, backgrounds
 from mirage.utils.timer import Timer
@@ -162,7 +161,6 @@ class GrismTSO():
                               "input files needed for the simulation."
                               "These files must be downloaded separately"
                               "from the Mirage package.".format(env_var)))
-        self.modpath = str(resources.files('mirage'))
 
         # Set the user-input parameters
         self.paramfile = parameter_file
@@ -684,7 +682,7 @@ class GrismTSO():
         crds_dict = crds_tools.dict_from_yaml(parameters)
 
         # Expand reference file entries to be full path names
-        parameters = utils.full_paths(parameters, self.modpath, crds_dict)
+        parameters = utils.full_paths(parameters, MODULE_PATH, crds_dict)
 
         # Find which background source catalogs are present
         supported_bkgd_types = ['pointsource', 'galaxyListFile', 'extended']

@@ -11,7 +11,6 @@ import argparse
 import datetime
 import sys
 import glob
-import importlib.resources as resources
 import logging
 import os
 import copy
@@ -51,7 +50,7 @@ from ..utils import backgrounds
 from ..utils import rotations, polynomial, read_siaf_table, utils
 from ..utils import set_telescope_pointing_separated as set_telescope_pointing
 from ..utils import siaf_interface, file_io
-from ..utils.constants import CRDS_FILE_TYPES, MEAN_GAIN_VALUES, SERSIC_FRACTIONAL_SIGNAL, \
+from ..utils.constants import CRDS_FILE_TYPES, MEAN_GAIN_VALUES, MODULE_PATH, SERSIC_FRACTIONAL_SIGNAL, \
                               SEGMENTATION_MIN_SIGNAL_RATE, SUPPORTED_SEGMENTATION_THRESHOLD_UNITS, \
                               LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME, TSO_MODES, NIRISS_GHOST_GAP_FILE, \
                               NIRISS_GHOST_GAP_URL, NIRCAM_SW_GRISMTS_APERTURES, NIRCAM_LW_GRISMTS_APERTURES, \
@@ -99,10 +98,6 @@ class Catalog_seed():
         self.logger = logging.getLogger(__name__)
 
         self.offline = offline
-
-        # Locate the module files, so that we know where to look
-        # for config subdirectory
-        self.modpath = str(resources.files('mirage'))
 
         # Get the location of the MIRAGE_DATA environment
         # variable, so we know where to look for darks, CR,
@@ -186,7 +181,7 @@ class Catalog_seed():
         self.crds_dict = crds_tools.dict_from_yaml(self.params)
 
         # Expand param entries to full paths where appropriate
-        self.params = utils.full_paths(self.params, self.modpath, self.crds_dict, offline=self.offline)
+        self.params = utils.full_paths(self.params, MODULE_PATH, self.crds_dict, offline=self.offline)
         self.filecheck()
         self.basename = os.path.join(self.params['Output']['directory'],
                                      self.params['Output']['file'][0:-5].split('/')[-1])
