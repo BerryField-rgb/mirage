@@ -115,8 +115,8 @@ from ..utils.constants import FGS1_DARK_SEARCH_STRING, FGS2_DARK_SEARCH_STRING
 from ..utils.siaf_interface import aperture_xy_to_radec
 from ..utils.utils import calc_frame_time, ensure_dir_exists, expand_environment_variable, parse_RA_Dec
 from .generate_observationlist import get_observation_dict
-from ..constants import MODULE_PATH, NIRISS_PUPIL_WHEEL_ELEMENTS, NIRISS_FILTER_WHEEL_ELEMENTS
-from ..utils.constants import CRDS_FILE_TYPES, SEGMENTATION_MIN_SIGNAL_RATE, \
+from ..constants import NIRISS_PUPIL_WHEEL_ELEMENTS, NIRISS_FILTER_WHEEL_ELEMENTS
+from ..utils.constants import CRDS_FILE_TYPES, MODULE_PATH, SEGMENTATION_MIN_SIGNAL_RATE, \
                               LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME
 from ..utils import siaf_interface, utils
 
