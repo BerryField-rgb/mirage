@@ -12,7 +12,6 @@ import logging
 import math
 import numpy as np
 import os
-import pkg_resources
 import re
 
 from astropy.coordinates import SkyCoord, Galactic
@@ -28,15 +27,21 @@ from mirage.catalogs.catalog_generator import PointSourceCatalog, GalaxyCatalog,
     ExtendedCatalog, MovingPointSourceCatalog, MovingExtendedCatalog, \
     MovingSersicCatalog
 from mirage.logging import logging_functions
+from mirage.reference_files import crds_tools
 from mirage.utils.constants import FGS_FILTERS, NIRCAM_FILTERS, NIRCAM_PUPIL_WHEEL_FILTERS, \
     NIRISS_FILTERS, NIRISS_PUPIL_WHEEL_FILTERS, NIRCAM_2_FILTER_CROSSES, NIRCAM_WL8_CROSSING_FILTERS, \
-    NIRCAM_CLEAR_CROSSING_FILTERS, NIRCAM_GO_PW_FILTER_PAIRINGS, LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME
+    NIRCAM_CLEAR_CROSSING_FILTERS, NIRCAM_GO_PW_FILTER_PAIRINGS, LOG_CONFIG_FILENAME, STANDARD_LOGFILE_NAME, \
+    MODULE_PATH
 from mirage.utils import siaf_interface
 from mirage.utils.utils import ensure_dir_exists, make_mag_column_names, standardize_filters
 
 classdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 log_config_file = os.path.join(classdir, 'logging', LOG_CONFIG_FILENAME)
 logging_functions.create_logger(log_config_file, STANDARD_LOGFILE_NAME)
+
+
+# Check that CRDS-related environment variables are set correctly
+crds_datadir = crds_tools.env_variables()
 
 
 def create_basic_exposure_list(xml_file, pointing_file):
@@ -166,8 +171,8 @@ def for_proposal(xml_filename, pointing_filename, point_source=True, extragalact
     ra_apertures = np.array(pointing_dictionary['ra_ref'] * u.deg)
     dec_apertures = np.array(pointing_dictionary['dec_ref'] * u.deg)
 
-    ra_targets = np.array([np.float(num) for num in pointing_dictionary['ra']] * u.deg)
-    dec_targets = np.array([np.float(num) for num in pointing_dictionary['dec']] * u.deg)
+    ra_targets = np.array([float(num) for num in pointing_dictionary['ra']] * u.deg)
+    dec_targets = np.array([float(num) for num in pointing_dictionary['dec']] * u.deg)
     mapped = np.array([False] * len(ra_targets))
     index = np.arange(len(ra_targets))
 
@@ -470,7 +475,7 @@ def query_WISE_ptsrc_catalog(ra, dec, box_width, wise_catalog='ALLWISE'):
 
     ra_dec_string = "{}  {}".format(ra, dec)
     query_table = Irsa.query_region(ra_dec_string, catalog=search_cat, spatial='Box',
-                                    width=box_width * u.arcsec, selcols=cols)
+                                    width=box_width * u.arcsec, columns=cols)
 
     # Exclude any entries with missing RA or Dec values
     radec_mask = filter_bad_ra_dec(query_table)
@@ -982,8 +987,7 @@ def read_standard_magnitudes():
     """
     # read in the values needed to transform the Besancon model magnitudes
     #
-    module_path = pkg_resources.resource_filename('mirage', '')
-    standard_mag_file = os.path.join(module_path, 'config/magslist_bosz_normal_mirage.new')
+    standard_mag_file = os.path.join(MODULE_PATH, 'config/magslist_bosz_normal_mirage.new')
     with open(standard_mag_file, 'r') as infile:
         lines = infile.readlines()
 
@@ -1432,7 +1436,7 @@ def wise_crossmatch(gaia_cat, gaia_wise, gaia_wise_crossref, wise_cat, twomass_c
         if (d2d[loop].arcsec) < 0.4:
             matchwise[idx[loop]] = True
             for n2 in range(num_gaia):
-                if gaia_cat['DESIGNATION'][n2] == gaia_wise_crossref['designation'][loop]:
+                if gaia_cat['designation'][n2] == gaia_wise_crossref['designation'][loop]:
                     gaiawiseinds[idx[loop]] = n2
                     break
     return matchwise, gaiawiseinds, twomasswiseinds
@@ -2466,8 +2470,7 @@ def galaxy_background(ra0, dec0, v3rotangle, box_width, instrument, filters,
                   'niriss_f430m_magnitude': 28, 'niriss_f444w_magnitude': 21,
                   'niriss_f480m_magnitude': 30, 'fgs_guider1_magnitude': 11,
                   'fgs_guider2_magnitude': 11}
-    module_path = pkg_resources.resource_filename('mirage', '')
-    catalog_file = os.path.join(module_path, 'config/goodss_3dhst.v4.1.jwst_galfit.cat')
+    catalog_file = os.path.join(MODULE_PATH, 'config/goodss_3dhst.v4.1.jwst_galfit.cat')
     catalog_values = np.loadtxt(catalog_file, comments='#')
 
     # Force positive values for radius, sersic index, and ellipticity

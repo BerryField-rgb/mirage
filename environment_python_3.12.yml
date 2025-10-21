@@ -1,4 +1,4 @@
-name: mirage-py3.11
+name: mirage-py3.12
 
 channels:
 - http://ssb.stsci.edu/astroconda
@@ -6,12 +6,11 @@ channels:
 - defaults
 dependencies:
 - pip
-- python==3.11.13
+- python==3.12.11
 - pip:
     - asdf==4.5.0
     - astropy==7.1.0
     - astroquery==0.4.11
-    - batman-package>=2.5.2
     - bokeh==3.8.0
     - crds==13.0.6
     - grismconf==1.51

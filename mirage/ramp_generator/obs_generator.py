@@ -40,7 +40,6 @@ import shutil
 
 import asdf
 import yaml
-import pkg_resources
 import numpy as np
 from astropy.io import fits, ascii
 from astropy.table import Table
@@ -57,7 +56,7 @@ from mirage.utils import file_io, read_fits, utils, siaf_interface
 from mirage.utils import set_telescope_pointing_separated as stp
 from mirage.utils.constants import EXPTYPES, MEAN_GAIN_VALUES, LOG_CONFIG_FILENAME, \
                                    STANDARD_LOGFILE_NAME, NUM_RESETS_BEFORE_EXP, NUM_RESETS_BEFORE_INT, \
-                                   TABLE_BASETIME
+                                   MODULE_PATH, TABLE_BASETIME
 from mirage.utils.timer import Timer
 
 
@@ -99,10 +98,6 @@ class Observation():
         # (used for WFSS mode), as well as the coordinate
         # offset between the nominal output array coordinates.
         self.coord_adjust = {'x': 1., 'xoffset': 0., 'y': 1., 'yoffset': 0.}
-
-        # Locate the module files, so that we know where to look
-        # for config subdirectory
-        self.modpath = pkg_resources.resource_filename('mirage', '')
 
         # Get the location of the MIRAGE_DATA environment
         # variable, so we know where to look for darks, CR,
@@ -1042,7 +1037,7 @@ class Observation():
         self.crds_dict = crds_tools.dict_from_yaml(self.params)
 
         # Expand param entries to full paths where appropriate
-        self.params = utils.full_paths(self.params, self.modpath, self.crds_dict, offline=self.offline)
+        self.params = utils.full_paths(self.params, MODULE_PATH, self.crds_dict, offline=self.offline)
         self.file_check()
 
         #print('self.linDark:', self.linDark)

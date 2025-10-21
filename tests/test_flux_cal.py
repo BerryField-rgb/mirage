@@ -11,14 +11,14 @@ Use
     >>> pytest
 """
 from astropy.table import Table
+import importlib.resources as resources
 import numpy as np
 import os
-import pkg_resources
 
 from mirage.utils import flux_cal
+from mirage.utils.constants import MODULE_PATH
 
-package_path = pkg_resources.resource_filename('mirage', '')
-CONFIG_DIR = os.path.join(package_path, 'config')
+CONFIG_DIR = os.path.join(MODULE_PATH, 'config')
 
 
 def test_add_detector_to_zeropoints():
