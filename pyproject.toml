@@ -2,6 +2,8 @@
 name = "mirage"
 description = "Create simulated JWST data"
 readme = "README.md"
+license = "BSD-3-Clause"
+license-files = ["LICENSE.txt"]
 authors = [
   { name = "Bryan Hilbert", email = "hilbert@stsci.edu" },
   { name = "Kevin Volk" },
@@ -71,10 +73,6 @@ docs = [
   "extension-helpers"
 ]
 
-[project.license]
-file = "LICENSE.txt"
-content-type = "text/plain"
-
 [build-system]
 requires = ["setuptools >= 73.0.1",
             "setuptools_scm[toml]>=7.1",
@@ -85,7 +83,14 @@ build-backend = 'setuptools.build_meta'
 include-package-data = true
 
 [tool.setuptools.packages.find]
+where = ["."]
+include = ["mirage*"]
 namespaces = false
+
+[tool.setuptools.package-data]
+"mirage" = ["config/*",
+			"reference_files/stellarmodels/phoenix/-0.0/*"]
+"mirage.logging" = ["*.yaml"]
 
 [tool.setuptools_scm]
 
