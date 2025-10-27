@@ -191,7 +191,12 @@ def generate_segment_psfs(ote, segment_tilts, out_dir, filters=['F212N', 'F480M'
     logger = logging.getLogger('mirage.psf.segment_psfs.generate_segment_psfs')
 
     # Create webbpsf NIRCam instance
-    inst = webbpsf.Instrument(instrument)
+    if instrument.lower() == 'nircam':
+        inst = webbpsf.NIRCam()
+    elif instrument.lower() == 'fgs':
+        inst = webbpsf.FGS()
+    else:
+        raise ValueError(f'Unsupported instrument: {instrument}')
 
     # Create dummy CreatePSFLibrary instance to get lists of filter and detectors
     lib = CreatePSFLibrary
@@ -415,14 +420,14 @@ def get_segment_offset(segment_number, detector, library_list):
     }
 
     x_rot = control_xaxis_rotations[segment]  # degrees
-    x_rot_rad = x_rot * np.pi / 180  # radians
+    x_rot_rad = np.float64(x_rot * np.pi / 180)  # radians
 
     # Note that y is defined as the x component and x is defined as the y component.
     # This is because "xtilt" moves the PSF in the y direction, and vice versa.
-    tilt_onto_y = (xtilt * np.cos(x_rot_rad)) - (ytilt * np.sin(x_rot_rad))
-    tilt_onto_x = (xtilt * np.sin(x_rot_rad)) + (ytilt * np.cos(x_rot_rad))
+    tilt_onto_y = np.float64((xtilt * np.cos(x_rot_rad)) - (ytilt * np.sin(x_rot_rad)))
+    tilt_onto_x = np.float64((xtilt * np.sin(x_rot_rad)) + (ytilt * np.cos(x_rot_rad)))
 
-    umrad_to_arcsec = 1e-6 * (180./np.pi) * 3600
+    umrad_to_arcsec = np.float64(1e-6 * (180./np.pi) * 3600)
     x_arcsec = 2 * umrad_to_arcsec * tilt_onto_x
     y_arcsec = 2 * umrad_to_arcsec * tilt_onto_y
 
@@ -452,9 +457,9 @@ def get_segment_offset(segment_number, detector, library_list):
     if f'S{segment_number:02d}XTILT' in header:
         hexike_to_arcsec = 206265/webbpsf.constants.JWST_SEGMENT_RADIUS
         # recall that Hexike tilt _around the X axis_ produces an offset _into Y_, and vice versa.
-        x_arcsec =  header[f'S{segment_number:02d}YTILT'] * hexike_to_arcsec
+        x_arcsec =  np.float64(header[f'S{segment_number:02d}YTILT'] * hexike_to_arcsec)
         # also recall coord flip of Y axis from OTE L.O.M in entrance pupil to exit pupil
-        y_arcsec = -header[f'S{segment_number:02d}XTILT'] * hexike_to_arcsec
+        y_arcsec = np.float64(-header[f'S{segment_number:02d}XTILT'] * hexike_to_arcsec)
 
     # Optionally, arbitrary boresight offset may also be present in the FITS header metadata.
     # If so, include that in the PSF too. Be careful about coordinate sign for the V2 axis!
