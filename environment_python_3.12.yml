@@ -30,6 +30,5 @@ dependencies:
     - pyyaml==6.0.3
     - scipy==1.17.1
     - setuptools==81.0.0
-    - sphinx==9.1.0
     - stpsf==2.2.0
     - synphot==1.7.0
