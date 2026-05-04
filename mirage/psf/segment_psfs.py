@@ -26,9 +26,9 @@ import time
 from astropy.io import fits
 import numpy as np
 import pysiaf
-import webbpsf
-from webbpsf.gridded_library import CreatePSFLibrary
-from webbpsf.utils import to_griddedpsfmodel
+import stpsf
+from stpsf.gridded_library import CreatePSFLibrary
+from stpsf.utils import to_griddedpsfmodel
 
 import multiprocessing
 import functools
@@ -56,7 +56,7 @@ def _generate_psfs_for_one_segment(inst, ote, segment_tilts, out_dir, boresight,
 
     i_segment = i + 1
 
-    segname = webbpsf.webbpsf_core.segname(i_segment)
+    segname = stpsf.stpsf_core.segname(i_segment)
     logger.info('GENERATING SEGMENT {} DATA'.format(segname))
 
     det_filt_match = False
@@ -76,12 +76,12 @@ def _generate_psfs_for_one_segment(inst, ote, segment_tilts, out_dir, boresight,
             inst.detector = det
 
             # Restrict the pupil to the current segment
-            pupil = webbpsf.webbpsf_core.one_segment_pupil(i_segment)
+            pupil = stpsf.stpsf_core.one_segment_pupil(i_segment)
             ote.amplitude = pupil[0].data
             inst.pupil = ote
 
             # Determine normalization factor - what fraction of total pupil is in this one segment?
-            full_pupil = fits.getdata(os.path.join(webbpsf.utils.get_webbpsf_data_path(), 'jwst_pupil_RevW_npix1024.fits.gz'))
+            full_pupil = fits.getdata(os.path.join(stpsf.utils.get_stpsf_data_path(), 'jwst_pupil_RevW_npix1024.fits.gz'))
             pupil_fraction_for_this_segment = pupil[0].data.sum() / full_pupil.sum()
 
             # Generate the PSF grid
@@ -192,9 +192,9 @@ def generate_segment_psfs(ote, segment_tilts, out_dir, filters=['F212N', 'F480M'
 
     # Create webbpsf NIRCam instance
     if instrument.lower() == 'nircam':
-        inst = webbpsf.NIRCam()
+        inst = stpsf.NIRCam()
     elif instrument.lower() == 'fgs':
-        inst = webbpsf.FGS()
+        inst = stpsf.FGS()
     else:
         raise ValueError(f'Unsupported instrument: {instrument}')
 
@@ -455,7 +455,7 @@ def get_segment_offset(segment_number, detector, library_list):
     # between different OTE pose terms into optical tip and tilt. In particular, this is needed for
     # accurate modeling of radial translation corrections when using incoherent PSF calculations.
     if f'S{segment_number:02d}XTILT' in header:
-        hexike_to_arcsec = 206265/webbpsf.constants.JWST_SEGMENT_RADIUS
+        hexike_to_arcsec = 206265/stpsf.constants.JWST_SEGMENT_RADIUS
         # recall that Hexike tilt _around the X axis_ produces an offset _into Y_, and vice versa.
         x_arcsec =  np.float64(header[f'S{segment_number:02d}YTILT'] * hexike_to_arcsec)
         # also recall coord flip of Y axis from OTE L.O.M in entrance pupil to exit pupil
